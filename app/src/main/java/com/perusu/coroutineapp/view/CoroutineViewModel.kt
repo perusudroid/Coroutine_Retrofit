@@ -25,7 +25,6 @@ open class CoroutineViewModel(
     val obRandomTwoDogs = liveData {
         emit(GeneralResult.Progress(true))
         emitSource(getRandomTwoDogs())
-        //test this
     }
 
     private fun getRandomTwoDogs(): LiveData<GeneralResult> = liveData {
