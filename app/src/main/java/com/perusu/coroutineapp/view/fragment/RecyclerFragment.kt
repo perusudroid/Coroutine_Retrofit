@@ -37,7 +37,6 @@ class RecyclerFragment : Fragment() {
         viewModel.getDogList()
     }
 
-
     private fun setAssets() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -48,8 +47,8 @@ class RecyclerFragment : Fragment() {
     private fun subscribeToChanges() {
         viewModel.obDogList.observe(viewLifecycleOwner, {
             when (it) {
-                is ResultOf.Progress -> showMessage(if(it.loading) "Loading" else "Stopped")
-                is ResultOf.Success -> recyclerAdapter.submitList(it.value)
+                is ResultOf.Progress -> if (it.loading) vsRoot.setParentVisible()
+                is ResultOf.Success -> recyclerAdapter.submitList(it.value).also { vsRoot.setChildVisible() }
                 is ResultOf.Empty -> showMessage(it.message)
                 is ResultOf.Failure -> showMessage(it.message ?: "onFailure")
             }
@@ -57,8 +56,8 @@ class RecyclerFragment : Fragment() {
     }
 
 
-   private fun showMessage(message : String){
-        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
+    private fun showMessage(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
 }

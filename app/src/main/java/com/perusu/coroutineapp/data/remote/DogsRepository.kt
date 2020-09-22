@@ -89,11 +89,13 @@ class DogsRepository(private val api: ApiInterface) : IRepo {
             }
         }
 
-        return when {
+      /*  return when {
             list.size == 94 -> ResultOf.Failure("Size is 94", null)
             list.size > 90 -> ResultOf.Empty("List count is below 94")
             else -> return ResultOf.Success(list)
-        }
+        }*/
+
+        return ResultOf.Success(list)
     }
 
 
