@@ -30,5 +30,4 @@ dependencies {
     implementation networking
     implementation lifecycleArch
     implementation navigation
-    implementation rx
 }
