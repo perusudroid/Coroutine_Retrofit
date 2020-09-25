@@ -29,7 +29,7 @@ open class CoroutineViewModel(
 
     private fun getRandomTwoDogs(): LiveData<GeneralResult> = liveData {
         while (true) {
-            delay(1000)
+            delay(10000)
             val topTwoDogsResult = iRepo.getRandomTwoDogs()
             emit(topTwoDogsResult)
         }

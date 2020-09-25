@@ -45,7 +45,7 @@ class DogsRepository(private val api: ApiInterface) : IRepo {
         }
     }
 
-    override suspend fun getTopTwoDogs() = withContext(Dispatchers.IO){
+    override suspend fun getTopTwoDogs() = withContext(Dispatchers.IO) {
 
         val dogList = mutableListOf<Dog>()
 
@@ -71,7 +71,7 @@ class DogsRepository(private val api: ApiInterface) : IRepo {
         dogList.add(Dog(dogBreedOneName, dogBreedOneImageResponse?.body()?.message))
         dogList.add(Dog(dogBreedTwoName, dogBreedTwoImageResponse?.body()?.message))
 
-        if(dogList.isNullOrEmpty())
+        if (dogList.isNullOrEmpty())
             ResultOf.Empty("List is empty")
         else
             ResultOf.Success(dogList)
@@ -89,11 +89,11 @@ class DogsRepository(private val api: ApiInterface) : IRepo {
             }
         }
 
-      /*  return when {
-            list.size == 94 -> ResultOf.Failure("Size is 94", null)
-            list.size > 90 -> ResultOf.Empty("List count is below 94")
-            else -> return ResultOf.Success(list)
-        }*/
+        /*  return when {
+              list.size == 94 -> ResultOf.Failure("Size is 94", null)
+              list.size > 90 -> ResultOf.Empty("List count is below 94")
+              else -> return ResultOf.Success(list)
+          }*/
 
         return ResultOf.Success(list)
     }
