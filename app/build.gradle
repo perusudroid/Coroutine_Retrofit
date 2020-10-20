@@ -29,5 +29,6 @@ dependencies {
     implementation view
     implementation networking
     implementation lifecycleArch
+    implementation coroutines
     implementation navigation
 }

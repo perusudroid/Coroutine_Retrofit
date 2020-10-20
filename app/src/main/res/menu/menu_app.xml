@@ -3,8 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ntu.haica.feature.resource.view.ResourceMoreActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_static"
         android:orderInCategory="100"
-        android:title="@string/app_name"
+        android:title="@string/menu_static"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_recylcer"
+        android:orderInCategory="100"
+        android:title="@string/menu_recylcer"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_flow"
+        android:orderInCategory="100"
+        android:title="@string/menu_flow"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_flow_sample"
+        android:orderInCategory="100"
+        android:title="@string/menu_flow_sample"
         app:showAsAction="never" />
 </menu>

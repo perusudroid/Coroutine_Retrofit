@@ -3,9 +3,9 @@ package com.perusu.coroutineapp.vm
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.perusu.coroutineapp.view.CoroutineViewModel
+import com.perusu.coroutineapp.data.domain.DogsRepository
 import com.perusu.coroutineapp.data.remote.NetworkModule
-import com.perusu.coroutineapp.data.remote.DogsRepository
+import com.perusu.coroutineapp.view.CoroutineViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val repo: DogsRepository) :

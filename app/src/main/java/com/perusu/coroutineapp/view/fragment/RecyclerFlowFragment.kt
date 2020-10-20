@@ -15,7 +15,7 @@ import com.perusu.coroutineapp.vm.CoroutineVMProvider
 import kotlinx.android.synthetic.main.fragment_recycler.*
 
 
-class RecyclerFragment : Fragment() {
+class RecyclerFlowFragment : Fragment() {
 
     private val viewModel: CoroutineViewModel by lazy {
         CoroutineVMProvider.obtainMainViewModel(this)
@@ -34,7 +34,6 @@ class RecyclerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setAssets()
         subscribeToChanges()
-        viewModel.getDogList()
     }
 
     private fun setAssets() {
@@ -45,7 +44,7 @@ class RecyclerFragment : Fragment() {
     }
 
     private fun subscribeToChanges() {
-        viewModel.obDogList.observe(viewLifecycleOwner, {
+        viewModel.obFlowDogList.observe(viewLifecycleOwner, {
             when (it) {
                 is ResultOf.Progress -> if (it.loading) vsRoot.setParentVisible()
                 is ResultOf.Success -> recyclerAdapter.submitList(it.value)

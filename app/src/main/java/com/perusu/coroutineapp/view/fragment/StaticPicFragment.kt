@@ -9,10 +9,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
-import com.perusu.coroutineapp.*
+import com.perusu.coroutineapp.R
 import com.perusu.coroutineapp.common.ImageLoader
-import com.perusu.coroutineapp.data.model.GeneralResult
 import com.perusu.coroutineapp.data.model.Dog
+import com.perusu.coroutineapp.data.model.GeneralResult
 import com.perusu.coroutineapp.data.model.ResultOf
 import com.perusu.coroutineapp.view.CoroutineViewModel
 import com.perusu.coroutineapp.vm.CoroutineVMProvider
@@ -56,7 +56,7 @@ class StaticPicFragment : Fragment() {
 
         viewModel.obTopTwoDogs.observe(viewLifecycleOwner, {
             when (it) {
-                is ResultOf.Progress -> showMessage(if(it.loading) "Loading" else "Stopped")
+                is ResultOf.Progress -> showMessage(if (it.loading) "Loading" else "Stopped")
                 is ResultOf.Success -> updateTopTwoDogs(it.value)
                 is ResultOf.Empty -> showMessage(it.message)
                 is ResultOf.Failure -> showMessage(it.message ?: "onFailure")
@@ -64,8 +64,8 @@ class StaticPicFragment : Fragment() {
         })
     }
 
-    private fun showMessage(msg : String){
-        Toast.makeText(requireContext(),msg, Toast.LENGTH_SHORT).show()
+    private fun showMessage(msg: String) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun updateTopTwoDogs(it: List<Dog>) {
@@ -73,12 +73,24 @@ class StaticPicFragment : Fragment() {
         it.let { list ->
             list[0].let {
                 dog_one.breed_name.text = it.breed
-                it.imageUsl?.let { it1 -> ImageLoader.loadImage(requireContext(), it1, dog_one.episode_item_image) }
+                it.imageUsl?.let { it1 ->
+                    ImageLoader.loadImage(
+                        requireContext(),
+                        it1,
+                        dog_one.episode_item_image
+                    )
+                }
             }
 
             list[1].let {
                 dog_two.breed_name.text = it.breed
-                it.imageUsl?.let { it1 -> ImageLoader.loadImage(requireContext(), it1, dog_two.episode_item_image) }
+                it.imageUsl?.let { it1 ->
+                    ImageLoader.loadImage(
+                        requireContext(),
+                        it1,
+                        dog_two.episode_item_image
+                    )
+                }
             }
         }
     }

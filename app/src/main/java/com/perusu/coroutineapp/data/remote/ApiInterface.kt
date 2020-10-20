@@ -20,4 +20,8 @@ interface ApiInterface{
 
     @GET("breed/{breedName}/images/random")
     suspend fun getImageByUrl(@Path("breedName") breedName: String): ApiResponse<String>
+
+    //flow
+    @GET("breeds/list/all")
+    suspend fun getBreedsListFlow(): ApiResponse<Map<String, List<String>>>
 }

@@ -1,11 +1,15 @@
-package com.perusu.coroutineapp.data.remote
+package com.perusu.coroutineapp.data.domain
 
 import com.perusu.coroutineapp.data.model.Dog
 import com.perusu.coroutineapp.data.model.GeneralResult
 import com.perusu.coroutineapp.data.model.ResultOf
+import com.perusu.coroutineapp.data.remote.ApiInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 
@@ -88,7 +92,6 @@ class DogsRepository(private val api: ApiInterface) : IRepo {
                 list.add(Dog(extractBreedName(it.message), it.message))
             }
         }
-
         /*  return when {
               list.size == 94 -> ResultOf.Failure("Size is 94", null)
               list.size > 90 -> ResultOf.Empty("List count is below 94")
@@ -97,6 +100,17 @@ class DogsRepository(private val api: ApiInterface) : IRepo {
 
         return ResultOf.Success(list)
     }
+
+    override suspend fun getDogListFlow(): Flow<ResultOf<List<Dog>>> = flow {
+        val list = mutableListOf<Dog>()
+        val dogBreedList = api.getBreedsList().message.keys.toList()
+        withContext(Dispatchers.IO) {
+            dogBreedList.map { async { api.getImageByUrl(it) } }.awaitAll().forEach {
+                list.add(Dog(extractBreedName(it.message), it.message))
+            }
+        }
+        emit(ResultOf.Success(list))
+    }.flowOn(Dispatchers.IO)
 
 
     private fun extractBreedName(message: String): String? {

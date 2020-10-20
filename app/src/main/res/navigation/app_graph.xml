@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_graph"
-    app:startDestination="@id/staticPicFragment">
+    app:startDestination="@id/sampleFragment">
 
     <fragment
         android:id="@+id/staticPicFragment"
@@ -14,4 +14,13 @@
         android:name="com.perusu.coroutineapp.view.fragment.RecyclerFragment"
         android:label="fragment_recycler"
         tools:layout="@layout/fragment_recycler" />
+    <fragment
+        android:id="@+id/recyclerFlowFragment"
+        android:name="com.perusu.coroutineapp.view.fragment.RecyclerFlowFragment"
+        android:label="RecyclerFlowFragment" />
+    <fragment
+        android:id="@+id/sampleFragment"
+        android:name="com.perusu.coroutineapp.view.fragment.FlowSampleFragment"
+        android:label="SampleFragment" />
+
 </navigation>

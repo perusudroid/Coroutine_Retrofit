@@ -4,4 +4,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recylcerView">Recyclerview</string>
     <string name="staticPics">Static</string>
+    <string name="menu_static">Static</string>
+    <string name="menu_recylcer">Recycler</string>
+    <string name="menu_flow">Flow</string>
+    <string name="menu_flow_sample">Flow samples</string>
 </resources>
