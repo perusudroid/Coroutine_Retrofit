@@ -1,5 +1,6 @@
 package com.perusu.coroutineapp.data.remote
 
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,7 +23,7 @@ object NetworkModule {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://dog.ceo/api/")
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
         return retrofit.create(ApiInterface::class.java)
     }

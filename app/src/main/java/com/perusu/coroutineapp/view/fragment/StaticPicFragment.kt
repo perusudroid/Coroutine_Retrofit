@@ -54,7 +54,7 @@ class StaticPicFragment : Fragment() {
             }
         })
 
-        viewModel.obTopTwoDogs.observe(viewLifecycleOwner, {
+        viewModel.obTopTwoDogs.observe(viewLifecycleOwner, Observer{
             when (it) {
                 is ResultOf.Progress -> showMessage(if (it.loading) "Loading" else "Stopped")
                 is ResultOf.Success -> updateTopTwoDogs(it.value)

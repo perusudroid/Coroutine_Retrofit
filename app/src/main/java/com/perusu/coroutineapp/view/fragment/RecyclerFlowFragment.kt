@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.perusu.coroutineapp.R
 import com.perusu.coroutineapp.data.model.ResultOf
@@ -44,7 +45,7 @@ class RecyclerFlowFragment : Fragment() {
     }
 
     private fun subscribeToChanges() {
-        viewModel.obFlowDogList.observe(viewLifecycleOwner, {
+        viewModel.obFlowDogList.observe(viewLifecycleOwner, Observer{
             when (it) {
                 is ResultOf.Progress -> if (it.loading) vsRoot.setParentVisible()
                 is ResultOf.Success -> recyclerAdapter.submitList(it.value)

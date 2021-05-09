@@ -22,5 +22,10 @@
         android:id="@+id/sampleFragment"
         android:name="com.perusu.coroutineapp.view.fragment.FlowSampleFragment"
         android:label="SampleFragment" />
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.perusu.coroutineapp.view.fragment.ContactsFragment"
+        android:label="fragment_contacts"
+        tools:layout="@layout/fragment_contacts" />
 
 </navigation>

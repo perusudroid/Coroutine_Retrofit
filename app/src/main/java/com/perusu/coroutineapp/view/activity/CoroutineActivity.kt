@@ -33,6 +33,7 @@ class CoroutineActivity : AppCompatActivity() {
                 R.id.action_recylcer -> R.id.recyclerFragment
                 R.id.action_flow -> R.id.recyclerFlowFragment
                 R.id.action_flow_sample -> R.id.sampleFragment
+                R.id.action_flow_contact -> R.id.contactsFragment
                 else -> R.id.staticPicFragment
             }
         )

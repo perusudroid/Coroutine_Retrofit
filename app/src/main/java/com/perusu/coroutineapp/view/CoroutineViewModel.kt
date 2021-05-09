@@ -1,36 +1,45 @@
 package com.perusu.coroutineapp.view
 
+import LoginResponse
+import android.database.Cursor
+import android.provider.ContactsContract
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.perusu.coroutineapp.common.CoroutineApp
 import com.perusu.coroutineapp.data.domain.IRepo
+import com.perusu.coroutineapp.data.model.ContactModel
 import com.perusu.coroutineapp.data.model.Dog
 import com.perusu.coroutineapp.data.model.GeneralResult
 import com.perusu.coroutineapp.data.model.ResultOf
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import kotlin.collections.set
 import kotlin.coroutines.CoroutineContext
 
-@ExperimentalCoroutinesApi
+
 open class CoroutineViewModel(
     private val iRepo: IRepo
 ) : ViewModel(), CoroutineScope {
 
+    var flowCount = 0
+    var obsCount = 0
     private val parentJob = SupervisorJob()
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + parentJob
 
     val mutableStateFlow = MutableStateFlow(0)
-
+    var timer = MutableLiveData<Int>()
     val obTopTwoDogs = MutableLiveData<ResultOf<List<Dog>>>()
     val obDogList = MutableLiveData<ResultOf<List<Dog>>>()
+    val obLogin = MutableLiveData<ResultOf<LoginResponse>>()
 
 
-    fun setMutableStateValue(){
-        launch{
+    fun setMutableStateValue() {
+        launch {
             (1..5).forEach {
                 delay(500)
                 mutableStateFlow.value = it
@@ -38,12 +47,30 @@ open class CoroutineViewModel(
         }
     }
 
-    fun flowWithMap() : Flow<Int> = flow{
+    fun startCoroutineTimer(
+        delayMillis: Long = 0,
+        repeatMillis: Long = 0
+    ): Flow<Int> = flow {
+        delay(delayMillis)
+        if (repeatMillis > 0) {
+            while (true) {
+                emit(flowCount)
+                flowCount++
+                delay(repeatMillis)
+            }
+        } else {
+            emit(flowCount)
+            flowCount++
+        }
+    }
+
+
+    fun flowWithMap(): Flow<Dog> = flow {
         (1..5).forEach {
             delay(500)
-           emit(it)
+            emit(Dog("", ""))
         }
-    }.map {it * it}
+    }.filter { it.breed == "1" }
 
 
     val obFlowDogList: LiveData<ResultOf<List<Dog>>> = liveData {
@@ -137,6 +164,17 @@ open class CoroutineViewModel(
         }
     }
 
+    fun startObsTimer() {
+        launch {
+            while (true) {
+                withContext(Dispatchers.IO) {
+                    delay(1000)
+                }
+                timer.value = obsCount
+                obsCount++
+            }
+        }
+    }
 
     fun flowSample(): Flow<Dog> = flow {
         emit(execute("German shepard"))
@@ -149,9 +187,109 @@ open class CoroutineViewModel(
         return Dog(text, null)
     }
 
+
+    fun fetchContacts(): Flow<ContactModel?> = flow {
+
+
+        CoroutineApp.createCursor().run {
+
+            moveToFirst()
+            val contactsMap = HashMap<Long, ContactModel>()
+
+            while (!isAfterLast) {
+                val longId = getLong(getColumnIndex(ContactsContract.Data.CONTACT_ID))
+                var contactItem = contactsMap[longId]
+
+                if (contactItem == null) {
+                    contactItem = ContactModel().apply {
+                        id = longId
+                        inVisibleGroup =
+                            getInt(getColumnIndex(ContactsContract.Data.IN_VISIBLE_GROUP))
+                        name = getString(getColumnIndex(ContactsContract.Data.DISPLAY_NAME_PRIMARY))
+                            ?: ""
+                        starred = getInt(getColumnIndex(ContactsContract.Data.STARRED)) != 0
+                        photo = getString(getColumnIndex(ContactsContract.Data.PHOTO_URI))
+                        thumbNail =
+                            getString(getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI))
+                    }
+                    contactsMap[longId] = contactItem
+                }
+                parseEmailAndPhone(
+                    this,
+                    getColumnIndex(ContactsContract.Data.MIMETYPE),
+                    getColumnIndex(ContactsContract.Data.DATA1),
+                    contactItem
+                )
+                moveToNext()
+            }
+            close()
+
+            val sorted = contactsMap.toList()
+                .sortedBy { (_, value) -> value }
+                .toMap()
+
+            for (key in sorted.keys) {
+                emit(contactsMap[key])
+            }
+
+        }
+    }.flowOn(Dispatchers.IO)
+        .filter { it?.inVisibleGroup == 1 }
+
+
+    private fun parseEmailAndPhone(
+        cursor: Cursor,
+        mimeTypeColumnIndex: Int,
+        dataColumnIndex: Int,
+        contactModel: ContactModel
+    ) {
+
+        when (cursor.getString(mimeTypeColumnIndex)) {
+            ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE -> {
+
+                with(contactModel) {
+                    if (!cursor.getString(dataColumnIndex).isNullOrEmpty()) {
+                        if (emails == null)
+                            emails = mutableSetOf()
+                        emails?.add(cursor.getString(dataColumnIndex))
+                    }
+                }
+            }
+            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE -> {
+
+                with(contactModel) {
+
+                    var phoneNumber = cursor.getString(dataColumnIndex)
+                    if (!phoneNumber.isNullOrEmpty()) {
+                        if (phone == null)
+                            phone = mutableSetOf()
+                        phoneNumber = phoneNumber.replace("\\s+".toRegex(), "")
+                        phone?.add(phoneNumber)
+                    }
+                }
+            }
+        }
+    }
+
+
+    fun doLogin(request: HashMap<String, String?>) {
+        launch {
+            obLogin.value = ResultOf.Progress(true)
+            val loginResult = runCatching { iRepo.login(request) }
+            loginResult.onSuccess {
+                obLogin.value = it
+            }.onFailure {
+                obLogin.value = ResultOf.Failure(it.message, it)
+            }
+            obLogin.value = ResultOf.Progress(false)
+        }
+
+    }
+
     override fun onCleared() {
         super.onCleared()
         parentJob.cancelChildren()
     }
+
 
 }

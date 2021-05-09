@@ -47,8 +47,41 @@
         android:text="Flow with map"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tvText"
+        app:layout_constraintBottom_toTopOf="@+id/btnFlowTimer"
         app:layout_constraintTop_toBottomOf="@+id/btnNoLiveData" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnFlowTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Flow Timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnObservableTimer"
+        app:layout_constraintTop_toBottomOf="@+id/btnFlowMap" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnObservableTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Observable Timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnLoginSample"
+        app:layout_constraintTop_toBottomOf="@+id/btnFlowTimer" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLoginSample"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Login Sample"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvText"
+        app:layout_constraintTop_toBottomOf="@+id/btnObservableTimer" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvText"
@@ -58,7 +91,7 @@
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnFlowMap"
+        app:layout_constraintTop_toBottomOf="@+id/btnLoginSample"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

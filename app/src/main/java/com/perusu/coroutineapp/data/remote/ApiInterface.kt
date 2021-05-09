@@ -1,8 +1,11 @@
 package com.perusu.coroutineapp.data.remote
 
+import LoginResponse
 import com.perusu.coroutineapp.data.model.ApiResponse
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ApiInterface{
@@ -24,4 +27,7 @@ interface ApiInterface{
     //flow
     @GET("breeds/list/all")
     suspend fun getBreedsListFlow(): ApiResponse<Map<String, List<String>>>
+
+    @POST("auth/token")
+    suspend fun login(@Body request: HashMap<String, String?>?): LoginResponse
 }

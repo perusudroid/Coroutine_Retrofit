@@ -1,5 +1,6 @@
 package com.perusu.coroutineapp.data.domain
 
+import LoginResponse
 import com.perusu.coroutineapp.data.model.Dog
 import com.perusu.coroutineapp.data.model.GeneralResult
 import com.perusu.coroutineapp.data.model.ResultOf
@@ -116,6 +117,13 @@ class DogsRepository(private val api: ApiInterface) : IRepo {
     private fun extractBreedName(message: String): String? {
         val breedName = message.substringAfter("breeds/").substringBefore("/")
         return breedName.replace(Regex("-"), " ").capitalize()
+    }
+
+
+    override suspend fun login(request: HashMap<String, String?>): ResultOf<LoginResponse> {
+        val result = api.login(request)
+        return ResultOf.Success(result)
+
     }
 
 }

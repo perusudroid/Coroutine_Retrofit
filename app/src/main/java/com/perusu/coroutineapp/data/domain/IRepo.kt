@@ -1,5 +1,6 @@
 package com.perusu.coroutineapp.data.domain
 
+import LoginResponse
 import com.perusu.coroutineapp.data.model.Dog
 import com.perusu.coroutineapp.data.model.GeneralResult
 import com.perusu.coroutineapp.data.model.ResultOf
@@ -14,5 +15,7 @@ interface IRepo {
     suspend fun getDogList() : ResultOf<List<Dog>>
 
     suspend fun getDogListFlow() : Flow<ResultOf<List<Dog>>>
+
+    suspend fun login(request: HashMap<String, String?>) : ResultOf<LoginResponse>
 
 }
